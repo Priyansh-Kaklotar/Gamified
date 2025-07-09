@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { EyeIcon, ViewOffIcon } from "hugeicons-react";
 import axios from "axios";
@@ -6,19 +7,20 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { ToastContainer, toast, Bounce } from "react-toastify";
+import { motion } from "framer-motion";
 
 const schema = yup.object().shape({
   username: yup
     .string()
     .required("Username is required")
-    .min(3, "username must be atleast 3 character long"),
+    .min(3, "username must be at least 3 characters long"),
   password: yup
     .string()
     .required("Password is required")
-    .min(6, "password is Too Short")
+    .min(6, "Password is too short")
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-      "PASSWORD is not STRONG!!"
+      "Password is not strong!"
     ),
 });
 
@@ -44,21 +46,7 @@ function LoginPage() {
         localStorage.setItem("token", d.token);
         localStorage.setItem("username", data.username);
         localStorage.setItem("userId", d.user._id);
-        console.log("Token set:", d.token);
-        reset();
-        // toast('✅ Login Successfull', {
-        //   position: "top-right",
-        //   autoClose: 2000,
-        //   hideProgressBar: false,
-        //   closeOnClick: false,
-        //   pauseOnHover: false,
-        //   draggable: false,
-        //   progress: undefined,
-        //   theme: "light",
-        //   transition: Bounce,
-        //   onClose: () => navigate("/dashboard"),
-        // });
-        toast.success("✅ Login Successfull");
+        toast.success("✅ Login Successful");
         navigate("/dashboard");
       } else {
         console.log("Login failed:", d.message);
@@ -89,7 +77,8 @@ function LoginPage() {
   };
 
   return (
-    <div className="w-full h-dvh gap-2.5 flex flex-col justify-center items-center bg-gradient-to-b from-purple-500 via-blue-400 to-cyan-500 text-white p-4 shadow-lg text-center">
+    <div className="w-full h-dvh gap-2.5 flex flex-col justify-center items-center bg-gradient-to-b from-purple-500 via-blue-400 to-cyan-500 text-white p-4 shadow-lg text-center relative overflow-hidden">
+      {/* Floating stars background */}
       <div className="pointer-events-none absolute w-full h-full overflow-hidden z-0">
         {[...Array(50)].map((_, i) => (
           <span
@@ -105,40 +94,50 @@ function LoginPage() {
           />
         ))}
       </div>
-      <h1 className="text-4xl font-bold">GAMIFIED</h1>
-      <h1 className="text-2xl font-bold">HABIT TRACKER</h1>
-      <div>
-        <img
-          src="https://cdn-icons-png.flaticon.com/512/8090/8090406.png"
-          width={200}
-        />
-      </div>
 
-      {/* Login user */}
-      {/* <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        transition={Bounce}
-      /> */}
-      <form
+      {/* Title */}
+      <motion.h1
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 150 }}
+        className="text-4xl font-bold z-10"
+      >
+        GAMIFIED
+      </motion.h1>
+      <motion.h2
+        initial={{ y: -30, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.2, type: "spring", stiffness: 120 }}
+        className="text-2xl font-bold z-10"
+      >
+        HABIT TRACKER
+      </motion.h2>
+
+      <motion.img
+        src="https://cdn-icons-png.flaticon.com/512/8090/8090406.png"
+        width={200}
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 0.4, type: "spring", stiffness: 200 }}
+        className="z-10"
+      />
+
+      {/* Form card with animation */}
+      <motion.form
         onSubmit={handleSubmit(onSubmit)}
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.5, type: "spring", stiffness: 120 }}
         className="form flex flex-col justify-center items-center p-5 bg-white/10 backdrop-blur-md rounded-2xl shadow-xl z-10 border border-white/20"
       >
         <div>
-          <input
+          <motion.input
+            whileFocus={{ scale: 1.05, boxShadow: "0 0 10px #9333ea" }}
             {...register("username")}
             type="text"
             name="username"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="username"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5"
+            placeholder="Username"
           />
           {errors.username && (
             <p className="text-red-300 text-sm mt-1">
@@ -148,15 +147,16 @@ function LoginPage() {
         </div>
         <br />
         <div className="flex justify-center items-center relative">
-          <input
+          <motion.input
+            whileFocus={{ scale: 1.05, boxShadow: "0 0 10px #9333ea" }}
             {...register("password")}
             type={eyeon ? "text" : "password"}
             name="password"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-75 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-80 p-2.5"
             placeholder="Password"
           />
           <span
-            className="cursor-pointer"
+            className="cursor-pointer absolute text-black right-3"
             onClick={() => {
               setEyeon(!eyeon);
             }}
@@ -170,16 +170,22 @@ function LoginPage() {
           )}
         </div>
 
-        <button
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.9 }}
           type="submit"
-          className="text-white cursor-pointer bg-gradient-to-b from-[#fbc02d] to-[#f57c00] font-semibold py-2 px-6 rounded-full shadow-md w-80 mt-6 hover:bg-gradient-to-b hover:from-[#f57c00] hover:to-[#fbc02d] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed active:scale-90"
+          className="text-white cursor-pointer bg-gradient-to-b from-[#fbc02d] to-[#f57c00] font-semibold py-2 px-6 rounded-full shadow-md w-80 mt-6 hover:bg-gradient-to-b hover:from-[#f57c00] hover:to-[#fbc02d] transition-all duration-300"
         >
           Log in
-        </button>
-      </form>
+        </motion.button>
+      </motion.form>
 
-      {/* sign up paragraph */}
-      <div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8 }}
+        className="z-10"
+      >
         <p className="text-sm mt-2">
           Don't have an account?
           <Link
@@ -189,7 +195,7 @@ function LoginPage() {
             Sign up
           </Link>
         </p>
-      </div>
+      </motion.div>
     </div>
   );
 }
