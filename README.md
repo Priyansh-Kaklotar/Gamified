@@ -45,11 +45,11 @@ Build Gamified from the source and install dependencies:
     ```
 
 2. **Navigate to the project directory:**
-    ``` cd Gamified ```
+    ```sh cd Gamified ```
 
 3. **Install the dependencies (using [npm](https://www.npmjs.com/)):**
-    ``` npm install  ```
+    ```sh npm install  ```
 
 ### Usage
 Run the project with (using [npm](https://www.npmjs.com/)):  
-```npm start```
+```sh npm start```
