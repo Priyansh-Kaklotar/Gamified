@@ -56,4 +56,6 @@ Build Gamified from the source and install dependencies:
 
 ### Usage
 Run the project with (using [npm](https://www.npmjs.com/)):  
-```sh npm start```
+```sh 
+npm start
+```
