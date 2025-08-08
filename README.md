@@ -52,4 +52,4 @@ Build Gamified from the source and install dependencies:
 
 ### Usage
 Run the project with (using [npm](https://www.npmjs.com/)):  
-```npm start
+```npm start```
